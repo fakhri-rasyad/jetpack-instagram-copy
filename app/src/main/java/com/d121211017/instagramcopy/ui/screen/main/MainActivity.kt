@@ -1,4 +1,4 @@
-package com.d121211017.instagramcopy
+package com.d121211017.instagramcopy.ui.screen.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
