@@ -1,6 +1,5 @@
 package com.d121211017.instagramcopy.ui.state
 
-import android.text.BoringLayout
 import com.d121211017.instagramcopy.data.model.posts
 
 sealed interface HomeScreenState{
@@ -27,7 +26,7 @@ sealed interface ProfileScreenState{
 
 data class UiState(
     val isDarkTheme: Boolean = false,
-    val homeScreenState: HomeScreenState.Loading,
-    val exploreScreenState: ExploreScreenState.Loading,
-    val profileScreenState: ProfileScreenState.Loading
+    val homeScreenState: HomeScreenState,
+    val exploreScreenState: ExploreScreenState,
+    val profileScreenState: ProfileScreenState
 )
