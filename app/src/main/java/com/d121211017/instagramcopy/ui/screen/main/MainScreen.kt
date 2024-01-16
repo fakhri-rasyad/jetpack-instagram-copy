@@ -3,6 +3,7 @@ package com.d121211017.instagramcopy.ui.screen.main
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
@@ -25,6 +26,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.d121211017.instagramcopy.R
+import com.d121211017.instagramcopy.ui.screen.home.HomeScreen
 import com.d121211017.instagramcopy.ui.state.UiState
 import com.d121211017.instagramcopy.ui.theme.InstagramCopyTheme
 import com.d121211017.instagramcopy.ui.viewmodel.InstagramCopyViewModel
@@ -33,6 +35,9 @@ enum class InstagramCopyScreen(val title: String){
     Home(title = "Home Screen"),
     Explore(title = "Explore Screen"),
     Profile(title = "Profile Screen"),
+    Notifications(title = "Notification Screen"),
+    Contact(title = "Contact Screen"),
+    Message(title = "Message Screen")
 }
 @Composable
 fun InstagramCopyApp(
@@ -40,7 +45,10 @@ fun InstagramCopyApp(
     navController: NavHostController = rememberNavController()
 ){
     val uistate by viewModel.uistate.collectAsState()
-    InstagramCopyScaffold(navController = navController, viewModel = viewModel, uiState = uistate)
+    InstagramCopyScaffold(
+        navController = navController,
+        viewModel = viewModel,
+        uiState = uistate)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,22 +61,37 @@ fun InstagramCopyScaffold(
     modifier: Modifier = Modifier
 ){
     Scaffold(
-        topBar = { InstagramCopyTopBar() },
-        bottomBar = { InstagramCopyBottomBar(navController = navController) }
+        topBar = {
+            InstagramCopyTopBar(
+                navController = navController,
+                viewModel = viewModel
+            )
+                 },
+        bottomBar = {
+            InstagramCopyBottomBar(
+                navController = navController
+            )
+        }
 
     ) {it ->
         NavHost(
             navController = navController,
             startDestination = InstagramCopyScreen.Home.name,
-            modifier = modifier.padding(it)){
+            modifier = modifier.padding(it).fillMaxSize()){
             composable(InstagramCopyScreen.Home.name){
-                Text("Home Screen")
+                HomeScreen(modifier = Modifier.fillMaxSize())
             }
             composable(InstagramCopyScreen.Explore.name){
                 Text("Explore")
             }
             composable(InstagramCopyScreen.Profile.name){
                 Text("Profile")
+            }
+            composable(InstagramCopyScreen.Notifications.name){
+                Text("Notification")
+            }
+            composable(InstagramCopyScreen.Contact.name){
+                Text("Contact")
             }
         }
     }
@@ -79,7 +102,8 @@ fun InstagramCopyScaffold(
 @Composable
 fun InstagramCopyTopBar(
     modifier: Modifier = Modifier,
-    navigation: () -> Unit = {}
+    viewModel: InstagramCopyViewModel,
+    navController: NavHostController
 ) {
     TopAppBar(
         title = {
@@ -87,10 +111,14 @@ fun InstagramCopyTopBar(
         },
         actions = {
             Row{
-                IconButton(onClick = navigation) {
+                IconButton(
+                    onClick = {viewModel.navigationFunction(navController = navController, destination = InstagramCopyScreen.Notifications.name) }
+                ) {
                     Icon(painterResource(id = R.drawable.favorite), contentDescription = "Favorite Button")
                 }
-                IconButton(onClick = navigation) {
+                IconButton(
+                    onClick = { viewModel.navigationFunction(navController = navController, destination = InstagramCopyScreen.Contact.name) }
+                ) {
                     Icon(painterResource(id = R.drawable.chat), contentDescription = "Chat Button")
                 }
             } }

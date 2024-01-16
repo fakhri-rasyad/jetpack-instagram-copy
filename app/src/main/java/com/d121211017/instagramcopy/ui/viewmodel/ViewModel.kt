@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.navigation.NavDestination
+import androidx.navigation.NavHostController
 import com.d121211017.instagramcopy.InstagramApplication
 import com.d121211017.instagramcopy.data.repository.NetworkRepository
 import com.d121211017.instagramcopy.data.repository.Repository
@@ -43,6 +45,12 @@ class InstagramCopyViewModel(private val repository: Repository): ViewModel() {
                 _uistate.update { currentState -> currentState.copy(homeScreenState = HomeScreenState.Failure) }
             }
         }
+    }
+
+    fun navigationFunction(navController: NavHostController, destination: String){
+        navController.navigate(destination)
+        println("**********************************************")
+        println(navController.currentDestination?.route)
     }
 
     companion object{
